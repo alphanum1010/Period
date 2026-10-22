@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#28172f">
+<title>Baby's Virtual Boyfriend 💗</title>
+<style>
+:root{--bg:#28172f;--panel:#392640;--pink:#ff9fc2;--light:#ffe4ef;--lav:#dfc9ff;--gold:#ffe5a1;--green:#b9f0cb}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#55304e 0%,transparent 55%),linear-gradient(155deg,#24152c,#3a2345 65%,#21142a);color:#fff4fa;font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;overflow-x:hidden}
+main{width:min(100% - 24px,560px);margin:auto;padding:22px 0 42px;position:relative}
+header{text-align:center;padding:12px 6px 20px}
+.eyebrow{color:#ffd0e2;font-size:.9rem;letter-spacing:.04em}
+h1{font-size:clamp(2.15rem,9vw,3.3rem);line-height:1.05;margin:12px 0;color:#fff3fa;text-shadow:0 4px #9a527f}
+header p{line-height:1.55;color:#f3dbea}
+.hero{font-size:4.7rem;display:inline-block;animation:bob 2.5s ease-in-out infinite;filter:drop-shadow(0 6px 0 #a84d7d)}
+.tag{display:inline-block;background:var(--pink);color:#3a2039;border-radius:30px;padding:8px 15px;font-weight:900}
+.card{background:#392640eF;border:1px solid #875078;border-radius:24px;padding:18px;margin:14px 0;box-shadow:0 12px 30px #10091435}
+.card h2{font-size:1.25rem;margin:0 0 7px}
+.card p{margin:5px 0 13px;color:#f0dbea;line-height:1.5;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.action{min-height:112px;border:1px solid #91618b;border-radius:18px;padding:13px 10px;background:#4a3051;color:#fff7fc;font:inherit;cursor:pointer;transition:transform .18s,border-color .18s,background .18s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center}
+.action:hover{transform:translateY(-3px);border-color:#ffc3d9;background:#59385e}
+.action:active{transform:scale(.97)}
+.emoji{font-size:2rem}.action strong{font-size:.98rem}.action small{font-size:.78rem;color:#f0cfe3}
+.feature{display:none;margin-top:15px;padding:17px;border-radius:20px;background:linear-gradient(135deg,#ffe0ec,#f5d9ff);color:#44243f;text-align:center;animation:appear .35s ease-out}
+.feature.show{display:block}.feature .big{font-size:3.1rem}.feature h3{font-size:1.35rem;margin:5px 0}.feature p{color:#56354f;font-size:1rem}
+.pill{border:0;border-radius:30px;padding:11px 16px;background:#4b2e51;color:#ffe1ed;font:inherit;font-weight:800;cursor:pointer}
+.pill.pink{background:#ff9fc2;color:#3b2039}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.note{background:#263b31;border-color:#4e956a}.voice{background:#302643;border-color:#8062a8}
+textarea{width:100%;min-height:82px;resize:vertical;background:#2e2037;border:1px solid #93628b;border-radius:14px;padding:12px;color:white;font:inherit}
+textarea::placeholder{color:#d7bad5}
+.status{font-size:.86rem;color:#ffd3e4;min-height:22px;text-align:center;margin-top:10px}
+.footer{text-align:center;color:#ff9fc2;font-size:1.1rem;font-weight:900;padding:16px 0 0}
+.float{position:fixed;bottom:-50px;z-index:10;pointer-events:none;animation:rise linear forwards;filter:drop-shadow(0 3px 5px #ff82b866)}
+.sprinkle{position:fixed;z-index:11;pointer-events:none;animation:spark .8s ease-out forwards}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
+@keyframes rise{to{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+@keyframes spark{0%{transform:scale(.2);opacity:0}40%{transform:scale(1.4);opacity:1}100%{transform:scale(.5);opacity:0}}
+@keyframes appear{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+@media(min-width:440px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+body{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.action.sel,.cb.sel,.opt.sel{border-color:#ffe5a1;background:#6a4470;outline:2px solid #ffe5a1}
+.circles{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin:12px 0}
+.cb{width:44px;height:44px;border-radius:50%;border:0;background:#ffb5d0;color:#3a2039;font:inherit;font-weight:800;cursor:pointer}
+.cb.sel{background:#ffe5a1}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{width:100%;border:1px solid #91618b;border-radius:14px;padding:12px 14px;background:#4a3051;color:#fff7fc;font:inherit;font-weight:700;text-align:left;cursor:pointer}
+.gold{background:#3a3020;border-color:#7a6338}
+.modal{display:none;position:fixed;inset:0;z-index:50;background:#140a1ae6;align-items:center;justify-content:center;padding:18px}
+.modal.show{display:flex}
+.mc{background:#3a2345;border:2px solid #ff9fc2;border-radius:22px;padding:20px;max-width:380px;text-align:center;animation:appear .3s ease-out}
+.mc h3{color:#ffe5a1;margin:0 0 10px}.mc p{white-space:pre-line;text-align:left;line-height:1.55;background:#00000030;padding:13px;border-radius:14px}
+.status a{color:#b9f0cb}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="eyebrow">A little love delivery, just for you ♡</div>
+  <div class="hero" aria-hidden="true">🐰💗</div>
+  <h1>Baby's Boyfriend<br>Button™</h1>
+  <div class="tag">Tap a button. Collect affection. 😌</div>
+  <p>For my favourite girl, especially on the days<br>when she deserves extra-soft treatment. 💕</p>
+</header>
+
+<section class="card">
+  <h2>💌 What does my baby need?</h2>
+  <p>Choose your service, Your Cuteness. My customer-support team is literally just me.</p>
+  <div class="grid">
+    <button class="action" data-kind="hug"><span class="emoji">🫂</span><strong>Hug delivery</strong><small>One giant virtual squeeze</small></button>
+    <button class="action" data-kind="kiss"><span class="emoji">💋</span><strong>Kiss attack</strong><small>Warning: highly affectionate</small></button>
+    <button class="action" data-kind="complain"><span class="emoji">⚖️</span><strong>Let me complain</strong><small>You are my emotional lawyer</small></button>
+    <button class="action" data-kind="laugh"><span class="emoji">😂</span><strong>Make me laugh</strong><small>Deploy boyfriend nonsense</small></button>
+    <button class="action" data-kind="comfort"><span class="emoji">🌷</span><strong>Period comfort</strong><small>Softness mode: activated</small></button>
+    <button class="action" data-kind="attention"><span class="emoji">🥺</span><strong>Attention please</strong><small>All eyes on baby</small></button>
+    <button class="action" data-kind="queen"><span class="emoji">👑</span><strong>Princess treatment</strong><small>Issue me a royal command</small></button>
+    <button class="action" data-kind="sleep"><span class="emoji">🌙</span><strong>Sleepy baby mode</strong><small>A tiny bedtime moment</small></button>
+    <button class="action" data-kind="surprise"><span class="emoji">🎁</span><strong>Surprise me</strong><small>Open a little love parcel</small></button>
+  </div>
+  <div class="feature" id="feature" aria-live="polite">
+    <div class="big" id="featureEmoji">💗</div>
+    <h3 id="featureTitle">Love delivered!</h3>
+    <p id="featureText"></p>
+    <div class="row">
+      <button class="pill pink" id="again">Again, please 💞</button>
+      <button class="pill" id="copyMessage">Copy message 💌</button>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>🧸 Energy &amp; cuddle rating</h2>
+  <p>How tired are you right now? 1 = exhausted baby, 10 = full of energy.</p>
+  <div class="circles"><button class="cb" data-v="1/10">1</button><button class="cb" data-v="2/10">2</button><button class="cb" data-v="3/10">3</button><button class="cb" data-v="4/10">4</button><button class="cb" data-v="5/10">5</button><button class="cb" data-v="6/10">6</button><button class="cb" data-v="7/10">7</button><button class="cb" data-v="8/10">8</button><button class="cb" data-v="9/10">9</button><button class="cb" data-v="10/10">10</button></div>
+</section>
+
+<section class="card gold">
+  <h2>💌 “Open when” letters</h2>
+  <p>Tap an envelope to unlock a secret note from me.</p>
+  <div class="opts">
+    <button class="opt env" data-k="1">😂 Open when you want a laugh</button>
+    <button class="opt env" data-k="2">💭 Open for my favourite vibe with you</button>
+    <button class="opt env" data-k="3">❤️ Open for what I love most about you</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>🐱 How should I spoil you next?</h2>
+  <p>Pick your guaranteed treat for the next time I hold you in person.</p>
+  <div class="opts">
+    <button class="opt iou" data-v="20-min shoulder &amp; foot massage 💆‍♀️">💆‍♀️ 20-min shoulder &amp; foot massage</button>
+    <button class="opt iou" data-v="Homemade comfort dinner 🍲">🍲 Homemade comfort dinner cooked by me</button>
+    <button class="opt iou" data-v="Cosy movie night, she picks everything 🍿">🍿 Cosy movie night (you pick everything)</button>
+    <button class="opt iou" data-v="All of the above 👑">👑 All of the above</button>
+  </div>
+</section>
+
+<section class="card voice">
+  <h2>🎙️ A little piece of my voice</h2>
+  <p>Press play to hear a little message from me.</p>
+  <audio id="voicePlayer" controls preload="none" style="width:100%;display:none"></audio>
+  <div class="row">
+    <button class="pill pink" id="voiceBtn">Play my sweet message 🔊</button>
+    <button class="pill" id="stopVoice">Stop audio</button>
+  </div>
+  <div class="status" id="voiceStatus">Press play, baby. ♡</div>
+</section>
+
+<section class="card note">
+  <h2>📝 Leave your boyfriend a tiny note</h2>
+  <p>Tell me what you need, what you're craving, or just send me a demand. No pressure, baby.</p>
+  <textarea id="note" placeholder="Baby, I need… 😘"></textarea>
+  <div class="row" style="margin-top:10px">
+    <button class="pill pink" id="sendNote">Send everything to my boyfriend 💌</button>
+    <button class="pill" id="heartBtn">Add a heart ❤️</button>
+  </div>
+  <div class="status" id="noteStatus" aria-live="polite"></div>
+</section>
+<div class="modal" id="modal"><div class="mc"><h3 id="mTitle"></h3><p id="mText"></p><button class="pill pink" id="closeModal">Back to my baby 💗</button></div></div>
+<div class="footer">You're loved, baby. Even on the grumpy days. ♡<div>💗 ✨ 🐰 ✨ 💗</div></div>
+</main>
+<script>
+const messages = {
+ hug: [
+  ['🫂','HUG SUCCESSFULLY DELIVERED','Wrap your arms around yourself for a second, baby. Imagine mine around you, holding you close and kissing the top of your head. I’d keep you there until you felt a little lighter.'],
+  ['💗','SQUEEEEEZE','This is a legally binding virtual hug. Escape is not permitted until at least one tiny smile appears. I love you, trouble.']
+ ],
+ kiss: [
+  ['💋','KISS ATTACK INCOMING','Mwah. Mwah. MWAH. Forehead, cheeks, nose… and one extra because you’re ridiculously kissable. 😘'],
+  ['😘','DELIVERY CONFIRMED','Your screen has received 27 imaginary kisses. Please do not attempt to return them; the boyfriend insists on sending more.']
+ ],
+ complain: [
+  ['⚖️','YOUR HONOUR, SHE IS RIGHT','After reviewing the evidence, this court finds that my baby is allowed to be tired, annoyed, emotional, and completely over today. Sentence: snacks, comfort, and absolutely no judgement.'],
+  ['📣','OFFICIAL BOYFRIEND STATEMENT','Whoever or whatever annoyed you has been added to my imaginary enemy list. Would you like to rant, baby? I’m listening.']
+ ],
+ laugh: [
+  ['😂','A VERY SERIOUS ANNOUNCEMENT','Baby, I was going to make you a cup of tea, but then I remembered I’m currently trapped inside a phone. My customer service is excellent; my delivery logistics are tragic.'],
+  ['🐣','BOYFRIEND JOKE LOADING','Are you a blanket? Because I want to be wrapped up with you and do absolutely nothing productive. 😭💗']
+ ],
+ comfort: [
+  ['🌷','SOFTNESS MODE: ON','If you have cramps, try a comfortably warm heat pad or hot-water bottle wrapped in a cover, sip some water, and get cosy. Want to tell me what hurts, or would you rather I distract you? No pressure to be cheerful, baby.'],
+  ['🧸','YOUR ONLY JOB IS TO REST','Get your comfiest blanket, your favourite drink, and whatever helps you feel okay. I can’t magically take the cramps away, but I can listen, keep you company, and remind you how loved you are.']
+ ],
+ attention: [
+  ['🥺','BABY HAS MY FULL ATTENTION','Phone on, ears open, heart available. You can tell me absolutely nothing for ten minutes and I’ll still be happy just seeing your face.'],
+  ['💞','EXTRA ATTENTION UNLOCKED','Breaking news: my favourite girl requires attention. Boyfriend has cancelled all imaginary meetings and is now accepting cuddles, gossip, and random thoughts.']
+ ],
+ queen: [
+  ['👑','HER MAJESTY’S DECREE','By royal order, Baby is entitled to unlimited affection, a protected right to complain, and at least three forehead kisses. Your boyfriend is on royal duty.'],
+  ['📜','ISSUE A ROYAL COMMAND','Your wish is my command, Your Cuteness. Within reason. I do reserve the right to be dramatic about how much I love you. 😂']
+ ],
+ sleep: [
+  ['🌙','SLEEPY BABY MODE','Let your shoulders relax, baby. Take a slow breath in, then let it out gently. You don’t have to solve anything right now. Imagine a forehead kiss from me. I’m sending you the softest goodnight.'],
+  ['⭐','ONE LAST FOREHEAD KISS','Close your eyes if you want to. Consider this your official reminder that you are loved, you’re allowed to rest, and tomorrow doesn’t need to be figured out tonight. Mwah.']
+ ],
+ surprise: [
+  ['🎁','YOUR LITTLE LOVE PARCEL','Inside this parcel: one thousand kisses, a lifetime supply of “have you had water?”, a personal complaint-listener, and one boyfriend who is embarrassingly obsessed with you. No refunds.'],
+  ['💝','SURPRISE! IT’S ME. AGAIN.','You have unlocked the premium boyfriend package: unlimited affection, questionable jokes, and sincere reminders that you never have to pretend to feel okay around me.']
+ ]
+};
+let currentKind='hug', currentMessage=messages.hug[0][2], rotate={};
+const feature=document.getElementById('feature');
+function show(kind){
+ currentKind=kind; const list=messages[kind]; const index=rotate[kind]||0;
+ const item=list[index%list.length]; rotate[kind]=(index+1)%list.length;
+ document.getElementById('featureEmoji').textContent=item[0];
+ document.getElementById('featureTitle').textContent=item[1];
+ document.getElementById('featureText').textContent=item[2];
+ currentMessage=item[2]; feature.classList.add('show'); feature.scrollIntoView({behavior:'smooth',block:'nearest'});
+ for(let i=0;i<9;i++) setTimeout(()=>floatHeart(['💗','💕','✨','💖'][i%4]),i*65);
+}
+const NUM='447344574420';
+const st={energy:null,needs:new Set(),letters:new Set(),iou:null,heart:false};
+const pickOne=(sel,key)=>document.querySelectorAll(sel).forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll(sel).forEach(x=>x.classList.remove('sel'));b.classList.add('sel');st[key]=b.dataset.v;}));
+pickOne('.cb','energy');pickOne('.iou','iou');
+document.querySelectorAll('[data-kind]').forEach(b=>b.addEventListener('click',()=>{st.needs.add(b.querySelector('strong').textContent);b.classList.add('sel');show(b.dataset.kind);}));
+const letters={
+ 1:['😂 Open when you want a laugh','People think I have everything together, studying law and acting serious. It’s a complete scam. The second my phone lights up with your face, my brain turns to mush.\n\nAlso, I’m officially claiming the title of Luckiest Guy Alive. Case closed, no appeals.'],
+ 2:['💭 My favourite vibe with you','It’s impossible to pick one memory. My favourites are the quiet, effortless ones where we lose track of time just talking and laughing.\n\nEvery time I look at you I think: that’s my person. You make every bit of distance worth it.'],
+ 3:['❤️ What I love most about you','Your voice instantly fixes my toughest days. But what I love most is the peace you bring into my life: how deeply you care, how hard you work, and how safe and at home I feel with you.\n\nYou’re my favourite person and I can’t wait to spoil you.']
+};
+document.querySelectorAll('.env').forEach(b=>b.addEventListener('click',()=>{const l=letters[b.dataset.k];st.letters.add(l[0]);b.classList.add('sel');document.getElementById('mTitle').textContent=l[0];document.getElementById('mText').textContent=l[1];document.getElementById('modal').classList.add('show');}));
+document.getElementById('closeModal').addEventListener('click',()=>document.getElementById('modal').classList.remove('show'));
+document.getElementById('again').addEventListener('click',()=>show(currentKind));
+document.getElementById('copyMessage').addEventListener('click',async()=>{
+ try{await navigator.clipboard.writeText(currentMessage);document.getElementById('featureTitle').textContent='Copied for your heart 💌';}
+ catch(e){document.getElementById('featureText').textContent=currentMessage+'\n\nSelect this message and copy it, baby 💗';}
+});
+function floatHeart(symbol){const h=document.createElement('span');h.className='float';h.textContent=symbol;h.style.left=(3+Math.random()*94)+'vw';h.style.fontSize=(20+Math.random()*22)+'px';h.style.animationDuration=(4+Math.random()*3)+'s';document.body.appendChild(h);setTimeout(()=>h.remove(),7500);}
+setInterval(()=>{if(document.visibilityState==='visible')floatHeart(['💗','💕','✨'][Math.floor(Math.random()*3)]);},1150);
+document.getElementById('heartBtn').addEventListener('click',e=>{st.heart=!st.heart;e.target.textContent=st.heart?'Heart added 💖':'Add a heart ❤️';if(st.heart)for(let i=0;i<18;i++)setTimeout(()=>floatHeart(['❤️','💗','💖'][i%3]),i*70);});
+function buildMessage(){
+ const note=document.getElementById('note').value.trim();
+ const L=['💗 *Baby’s answers* 💗',
+  '• Energy: '+(st.energy||'not picked'),
+  '• Needs: '+(st.needs.size?[...st.needs].join(', '):'none tapped'),
+  '• Letters opened: '+(st.letters.size?[...st.letters].join(' | '):'none'),
+  '• Next treat: '+(st.iou||'surprise me'),
+  '• Heart: '+(st.heart?'yes ❤️':'no')];
+ if(note)L.push('• Note: “'+note+'”');
+ return L.join('\n');
+}
+document.getElementById('sendNote').addEventListener('click',()=>{
+ const url='https://wa.me/'+NUM+'?text='+encodeURIComponent(buildMessage());
+ const s=document.getElementById('noteStatus');
+ s.textContent='Opening WhatsApp so you can send it. 💗 ';
+ const a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener';a.textContent='Tap here if it didn’t open';s.appendChild(a);
+ window.open(url,'_blank','noopener');
+});
+(async()=>{const player=document.getElementById('voicePlayer');
+ for(const name of ['voice-note.mp3','voice-note.m4a']){
+  try{const r=await fetch(name,{method:'HEAD'});if(r.ok){player.src=name;player.style.display='block';document.getElementById('voiceStatus').textContent='A voice note, just for you. Press play. ♡';break;}}catch(e){}
+ }})();
+const spokenMessage="Hey baby. Come here. Sending you the biggest hug and the softest forehead kiss. You don't have to be okay every second. If you want to talk, I'm listening. If you want a distraction, I've got terrible jokes ready. And if you just want company, I'm right here. I love you, trouble.";
+let speech=null;
+document.getElementById('voiceBtn').addEventListener('click',()=>{
+ const status=document.getElementById('voiceStatus');
+ const player=document.getElementById('voicePlayer');
+ if(player.getAttribute('src')){player.play().catch(()=>status.textContent='Tap play on the audio player to hear your recording.');return;}
+ if(!('speechSynthesis' in window)){status.textContent='This browser does not support spoken messages. Add your own voice-note.mp3 instead.';return;}
+ window.speechSynthesis.cancel(); speech=new SpeechSynthesisUtterance(spokenMessage);speech.lang='en-GB';speech.rate=.92;speech.pitch=1.08;
+ speech.onstart=()=>status.textContent='A little spoken love, just for you… 💗';speech.onend=()=>status.textContent='Imagine that was a voice note from me. Replace it with your real voice for maximum cuteness. ♡';
+ window.speechSynthesis.speak(speech);
+});
+document.getElementById('stopVoice').addEventListener('click',()=>{if('speechSynthesis'in window)window.speechSynthesis.cancel();document.getElementById('voicePlayer').pause();document.getElementById('voiceStatus').textContent='Audio stopped. Tap play whenever you want, baby. 💗';});
+</script>
+</body>
+</html>
